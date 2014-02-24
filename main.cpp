@@ -142,8 +142,8 @@ float saturation(float s, float p){
     setpoint3=1;
     
     //TEST SETUP
-    waittime=800; //0; 100; 270; 450; 800; 1200;
-    trackingtest=0;
+    waittime=450; //0; 100; 270; 450; 800; 1200; microseconds
+    trackingtest=1;
     
     if(waittime==0){    //4.5kHz
         m=5;
@@ -193,10 +193,10 @@ float saturation(float s, float p){
             com.printf(str2);
             t5.reset();
             break;}
-        if(timecount>2500000*(k+1)){
+        if(timecount>1500000*(k+1)){
             k++;
             reset2=1;
-            T=2.5;
+            T=1.5;
             if(k%2==0){setpoint3=21;}
             else{setpoint3=1;}
             }  
@@ -280,7 +280,7 @@ float saturation(float s, float p){
         
         error3=setpoint333-distance3;
         
-        speed3=(distance3-preval3)/(looptime1); 
+        speed3=(distance3-preval3)/(looptime1);
         
         v3[0]=v3[1];
         v3[1]=filt1*speed3;//1367
@@ -288,13 +288,13 @@ float saturation(float s, float p){
         w3[1]=v3[0]+v3[1]+filt2*w3[0];//7265
         fspeed3=w3[1];
 
-        a3prevf=(fspeed3-fspeed3prev)/(looptime1/1000);
+        a3prev=(fspeed3-fspeed3prev)/(looptime1/1000);
         
         va3[0]=va3[1];
         va3[1]=filt1*a3prevf;
         wa3[0]=wa3[1];
         wa3[1]=va3[0]+va3[1]+filt2*wa3[0];
-        a3prev=wa3[1];     
+        //a3prev=wa3[1];     
         
         looptime3=t3.read_us()/1000.0;
         t3.reset();
@@ -302,7 +302,7 @@ float saturation(float s, float p){
         if(T==0){
         vset3=0;
         aset3=0;}
-        lambda=12.5;
+        lambda=11;
         smc3=lambda*error3+(vset3/1000-fspeed3)*1000;
         if(abs(smc3)>0.3){k3=20;}
         else{k3=0;}
@@ -364,7 +364,11 @@ float saturation(float s, float p){
         if(z==1){sprintf(str2,"%1d/",timecount);} 
         if(z==2){sprintf(str2,"%4.3f/",distance3);}
         if(z==3){sprintf(str2,"%4.3f/",setpoint333);
-        z=0;}            
+        if(trackingtest==0){z=0;}}
+        if(trackingtest==1){
+            if(z==4){sprintf(str2,"%4.3f/",set3);
+            z=0;}   
+            }         
 
         //sprintf(str2,"%4.3f/",looptime1);
         //sprintf(str2,"%4.3f/%4.3f/",looptime1,looptime5);
