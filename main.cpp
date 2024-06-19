@@ -2,6 +2,8 @@
 #include "SerialRPCInterface.h"
 #include "MCP4922.h"
 
+// mbed code for digital pressure regulators
+
 using namespace mbed;
 MCP4922 MCP1(p5, p7,p15);  // MOSI, SCLK, CS
 MCP4922 MCP2(p5, p7,p16);  // MOSI, SCLK, CS
